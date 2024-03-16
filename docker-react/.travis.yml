@@ -1,0 +1,19 @@
+sudo: required
+services: 
+    - docker
+
+before_install:
+    - docker build -t ashishnitw/docker-react -f Dockerfile.dev
+
+script:
+    - docker run ashishnitw/docker-react npm run test -- --coverage
+
+deploy:
+    provider: elasticbeanstalk
+    region: us-west-2
+    app: "docker"
+    env: "Docker-env"
+    bucket_name: "elasticbeanstalk-us-west-2-3478965"
+    bucket_path: "docker"
+    on:
+        branch: master
